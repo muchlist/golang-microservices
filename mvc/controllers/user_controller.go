@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/muchlist/golang-microservices/mvc/utils"
-
 	"github.com/muchlist/golang-microservices/mvc/services"
+	"github.com/muchlist/golang-microservices/mvc/utils"
 )
 
 //GetUser mengembalikan user
@@ -25,7 +24,7 @@ func GetUser(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	user, apiErr := services.GetUser(userID)
+	user, apiErr := services.UserService.GetUser(userID)
 	if apiErr != nil {
 		jsonValue, _ := json.Marshal(apiErr)
 		resp.WriteHeader(apiErr.StatusCode)
