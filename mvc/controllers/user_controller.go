@@ -1,37 +1,35 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/muchlist/golang-microservices/mvc/services"
 	"github.com/muchlist/golang-microservices/mvc/utils"
 )
 
 //GetUser mengembalikan user
-func GetUser(resp http.ResponseWriter, req *http.Request) {
-	userID, err := strconv.ParseInt(req.URL.Query().Get("user_id"), 10, 64)
+func GetUser(c *gin.Context) {
+	//c.Param for parameter  localhost/users/user_id
+	//c.Query for query localhost/users?user_id=
+	userID, err := strconv.ParseInt(c.Param("user_id"), 10, 64)
 	if err != nil {
 		apiErr := &utils.ApplicationError{
 			Message:    "UserID harus berupa angka!",
 			StatusCode: http.StatusBadRequest,
 			Code:       "bad_request",
 		}
-		jsonValue, _ := json.Marshal(apiErr)
-		resp.WriteHeader(apiErr.StatusCode)
-		resp.Write(jsonValue)
+		//c.JSON(apiErr.StatusCode, apiErr) <- normalnya seperti ini
+		utils.RespondError(c, apiErr)
 		return
 	}
 
 	user, apiErr := services.UserService.GetUser(userID)
 	if apiErr != nil {
-		jsonValue, _ := json.Marshal(apiErr)
-		resp.WriteHeader(apiErr.StatusCode)
-		resp.Write(jsonValue)
+		utils.RespondError(c, apiErr)
 		return
 	}
 
-	jsonValue, _ := json.Marshal(user)
-	resp.Write(jsonValue)
+	utils.Respond(c, http.StatusOK, user)
 }
