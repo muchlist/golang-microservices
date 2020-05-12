@@ -10,7 +10,7 @@ const (
 	polo = "polo"
 )
 
-//Polo seperti ping pong
-func Polo(c *gin.Context) {
+//Marco seperti ping pong
+func Marco(c *gin.Context) {
 	c.JSON(http.StatusOK, polo)
 }

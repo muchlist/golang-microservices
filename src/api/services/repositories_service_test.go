@@ -69,4 +69,5 @@ func TestCreateRepoNoError(t *testing.T) {
 	assert.NotNil(t, result)
 	assert.EqualValues(t, 123, result.ID)
 	assert.EqualValues(t, "golang-tutorial", result.Name)
+	assert.EqualValues(t, "", result.Owner)
 }
