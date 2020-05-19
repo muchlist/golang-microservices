@@ -14,7 +14,6 @@ func init() {
 
 //StartApp memulai gin gonic applikasi
 func StartApp() {
-
 	mapUrls()
 
 	err := router.Run(":8080")
