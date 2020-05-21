@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/muchlist/golang-microservices/src/api/domain/github"
-	"github.com/muchlist/golang-microservices/src/api/log"
+	"github.com/muchlist/golang-microservices/src/api/log/option_b"
 	"github.com/muchlist/golang-microservices/src/api/providers/githubprovider"
 
 	"github.com/muchlist/golang-microservices/src/api/config"
@@ -40,16 +40,22 @@ func (s *repoService) CreateRepo(clientID string, input repositories.CreateRepoR
 		Description: input.Description,
 	}
 
-	log.Info("about to send request to external api", fmt.Sprintf("client_id:%s", clientID), "status:pending")
+	option_b.Info("about to send request to external api",
+		option_b.Field("client_id", clientID),
+		option_b.Field("status", "pending"))
 
 	response, err := githubprovider.CreateRepo(config.GetGithubAccessToken(), request)
 	if err != nil {
-		log.Error("response obtained from external api", err, fmt.Sprintf("client_id:%s", clientID), "status:error")
+		option_b.Error("response obtained from external api",
+			option_b.Field("client_id", clientID),
+			option_b.Field("status", "error"))
 		apiErr := errors.NewApiError(err.StatusCode, err.Message)
 		return nil, apiErr
 	}
 
-	log.Info("response obtained from external api", fmt.Sprintf("client_id:%s", clientID), "status:success")
+	option_b.Info("response obtained from external api",
+		option_b.Field("client_id", clientID),
+		option_b.Field("status", "success"))
 	result := repositories.CreateRepoResponse{
 		ID:    response.ID,
 		Name:  response.Name,
