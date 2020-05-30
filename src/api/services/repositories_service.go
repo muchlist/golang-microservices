@@ -46,7 +46,7 @@ func (s *repoService) CreateRepo(clientID string, input repositories.CreateRepoR
 
 	response, err := githubprovider.CreateRepo(config.GetGithubAccessToken(), request)
 	if err != nil {
-		option_b.Error("response obtained from external api",
+		option_b.Error("response obtained from external api", err,
 			option_b.Field("client_id", clientID),
 			option_b.Field("status", "error"))
 		apiErr := errors.NewApiError(err.StatusCode, err.Message)
