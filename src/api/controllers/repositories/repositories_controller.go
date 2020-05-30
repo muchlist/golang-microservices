@@ -11,6 +11,7 @@ import (
 
 //CreateRepo membuat repository di guthub
 func CreateRepo(c *gin.Context) {
+	//isPrivate := c.GetHeader("X-Private")
 	var request repositories.CreateRepoRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		apiErr := errors.NewBadRequestError("invalid json body")
